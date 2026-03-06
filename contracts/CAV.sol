@@ -1,10 +1,16 @@
-
 // SPDX-License-Identifier: MIT
-// Compatible with OpenZeppelin Contracts ^5.4.0
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.20;
 
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CAV is ERC721 {
-    constructor() ERC721("CAV", "MTK") {}
+contract CryptoAvatars is ERC721, Ownable {
+    uint256 private _nextTokenId;
+
+    constructor() ERC721("CryptoAvatars", "CAV") Ownable(msg.sender) {}
+
+    function safeMint(address to) public onlyOwner {
+        uint256 tokenId = _nextTokenId++;
+        _safeMint(to, tokenId);
+    }
 }
